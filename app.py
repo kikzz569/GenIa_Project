@@ -1,7 +1,6 @@
 import streamlit as st
 from datetime import datetime, time
-import contrato
-
+from contrato import Venda
 produtos = [
     "ZapFlow com ChatGPT",
     "ZapFlow com Llama",
@@ -19,12 +18,18 @@ def main():
 
     if st.button("Confirmar venda"):
         data_hora = datetime.combine(data_venda, horario_venda)
-        st.write("**Dados da venda**")
-        st.write(f'Email do vendedor: {email}')
-        st.write(f'data e hora da venda: {data_hora}')
-        st.write(f'valor da venda: {valor_venda:.2f}')
-        st.write(f'Quantidade de produtos vendidos: {quantidade_produto}')
-        st.write(f'produto: {produto}')
+        try:
+            venda = Venda(
+                email = email,
+                data_hora = data_hora,
+                valor_venda = valor_venda,
+                quantidade_produto = quantidade_produto,
+                produto = produto
+            )
+            st.write("venda registrada")
+        except Exception as e:
+            st.write(f"Erro = {e}")
+        st.write(f'detalhes do registro: ', venda.model_dump())
 
 if __name__=="__main__":
     main()
